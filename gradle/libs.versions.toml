@@ -16,8 +16,10 @@ junit-platform-launcher-version = "1.11.1"
 lombok-version = "1.18.34"
 meanbean-version = "3.0.0-M9"
 mockito-core-version = "5.14.1"
+pdfbox-version = "3.0.3"
 silly-collection-version = "28"
 silly-io-version = "3.1"
+tess4j-version = "5.13.0"
 test-object-version = "9"
 throwable-version = "3"
 
@@ -34,8 +36,10 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok-version" }
 meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-core-version" }
 mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito-core-version" }
+pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-version" }
 silly-collection = { module = "io.github.astrapi69:silly-collection", version.ref = "silly-collection-version" }
 silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
+tess4j = { module = "net.sourceforge.tess4j:tess4j", version.ref = "tess4j-version" }
 test-object = { module = "io.github.astrapi69:test-object", version.ref = "test-object-version" }
 throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
 
@@ -47,6 +51,11 @@ annotation-processor = [
 # Dependencies required only at compile-time and not included in the final artifact
 compile-only = [
     "lombok",
+]
+# Bundle of the core dependencies
+core-dependencies = [
+    "pdfbox",
+    "tess4j",
 ]
 # Annotation processor dependencies used specifically for test classes
 test-annotation-processor = [

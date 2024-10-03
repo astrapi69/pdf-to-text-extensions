@@ -56,6 +56,8 @@ compile-only = [
 core-dependencies = [
     "pdfbox",
     "tess4j",
+    "silly-io",
+    "file-worker",
 ]
 # Annotation processor dependencies used specifically for test classes
 test-annotation-processor = [
@@ -74,7 +76,6 @@ unit-testing = [
     "assertj-core",
     "commons-text",
     "equalsverifier",
-    "file-worker",
     "gradle-migration-data",
     "junit-jupiter",
     "junit-jupiter-params",
@@ -82,7 +83,6 @@ unit-testing = [
     "mockito-core",
     "mockito-junit-jupiter",
     "silly-collection",
-    "silly-io",
     "test-object",
     "throwable",
 ]

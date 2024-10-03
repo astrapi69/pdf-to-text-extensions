@@ -1,62 +1,116 @@
 package io.github.astrapisixtynine.pdf.to.text;
 
-import java.awt.image.BufferedImage;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
-import net.sourceforge.tess4j.TesseractException;
+import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
 
+/**
+ * Test class for {@link PdfToTextExtensions}
+ */
 class PdfToTextExtensionsTest
 {
 
-	@Test
-	void extractTextFromImage()
+	private File pdfFile;
+	private File outputDir;
+
+	/**
+	 * Sets up test data before each test
+	 */
+	@BeforeEach
+	void setUp()
 	{
-		String pdfFilePath;
-		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
-			"RaptisRA27_08_2024.pdf");
+		pdfFile = new File(PathFinder.getSrcTestResourcesDir(), "sample.pdf");
+		outputDir = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), "output");
+		outputDir.mkdirs();
+	}
+
+	/**
+	 * cleans up after each test
+	 */
+	@AfterEach
+	void tearDown() throws IOException
+	{
+		if (outputDir != null)
+		{
+			DeleteFileExtensions.delete(outputDir);
+		}
+	}
+
+	/**
+	 * Tests the method {@link PdfToTextExtensions#pdfToText(File, File)}
+	 */
+	@Test
+	void testPdfToText() throws IOException
+	{
+		File resultFile = PdfToTextExtensions.pdfToText(pdfFile, outputDir);
+		assertNotNull(resultFile);
+		assertTrue(resultFile.exists());
+	}
+
+	/**
+	 * Tests the method {@link PdfToTextExtensions#pdfToText(File, File)}
+	 */
+	@Test
+	@Disabled
+	void extractTextFromImageSOF() throws IOException
+	{
+		String pdfFileName;
+		String fileName;
+		fileName = "sample";
+		pdfFileName = fileName + ".pdf";
+
+		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), pdfFileName);
+
 		File resultDir = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
 			"text-result");
-		String resultDirPath = resultDir.getAbsolutePath();
-		String outputDirectory = resultDirPath + "/";
+		File resultTextFile = PdfToTextExtensions.pdfToText(pdfFile, resultDir);
+	}
 
-		pdfFilePath = pdfFile.getAbsolutePath();
 
-		try
-		{
-			// Schritt 1: PDF in Bilder konvertieren
-			PDDocument document = Loader.loadPDF(new File(pdfFilePath));
+	/**
+	 * Tests the method {@link PdfToTextExtensions#convertPdfToTextfile(File, File)}
+	 */
+	@Test
+	void testConvertPdfToTextfile() throws IOException, InterruptedException
+	{
+		ConversionResult result = PdfToTextExtensions.convertPdfToTextfile(pdfFile, outputDir);
+		assertNotNull(result);
+		assertFalse(result.getImageFiles().isEmpty());
+		assertFalse(result.getTextFiles().isEmpty());
+		assertTrue(result.getResultTextFile().exists());
+	}
 
-			PDFRenderer pdfRenderer = new PDFRenderer(document);
+	/**
+	 * Tests the method {@link PdfToTextExtensions#convertPdfToTextfile(File, File)}
+	 */
+	@Test
+	@Disabled
+	void extractTextFromImage() throws IOException, InterruptedException
+	{
+		String pdfFileName;
+		String fileName;
+		fileName = "sample";
+		pdfFileName = fileName + ".pdf";
 
-			for (int page = 0; page < document.getNumberOfPages(); ++page)
-			{
-				BufferedImage image = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-				File imageFile = new File(outputDirectory + "page_" + (page + 1) + ".png");
-				ImageIO.write(image, "png", imageFile);
+		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), pdfFileName);
+		File resultDir = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"text-result");
 
-				// Schritt 2: Texterkennung mit Tesseract durchführen
-				String extractedText = PdfToTextExtensions.extractTextFromImage(imageFile,
-					resultDirPath, "deu");
-				System.out.println("Erkannter Text auf Seite " + (page + 1) + ":");
-				System.out.println(extractedText);
-			}
+		ConversionResult conversionResult = PdfToTextExtensions.convertPdfToTextfile(pdfFile,
+			resultDir);
 
-			document.close();
-		}
-		catch (IOException | TesseractException e)
-		{
-			e.printStackTrace();
-		}
+		DeleteFileExtensions.delete(conversionResult.getImageFiles());
+		DeleteFileExtensions.delete(conversionResult.getTextFiles());
 	}
 
 }

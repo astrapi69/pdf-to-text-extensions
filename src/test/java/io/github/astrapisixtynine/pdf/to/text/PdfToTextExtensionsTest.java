@@ -120,7 +120,12 @@ class PdfToTextExtensionsTest
 	 * Tests the method {@link PdfToTextExtensions#convertPdfToTextfile(File, File)}
 	 */
 	@Test
-	@Disabled
+	@Disabled("""
+		only for local use:
+		Replace 'fileName' with the name of your PDF file name without the extension.
+		The location of the PDF file must be the 'test resource folder'
+		The output is generated in the subfolder 'text-result' of the 'test resource folder'
+		""")
 	void extractTextFromImage() throws IOException, InterruptedException
 	{
 		String pdfFileName;

@@ -10,15 +10,17 @@ gradle-plugin-lombok-version = "8.10"
 gradle-plugin-spotless-version = "7.0.0.BETA2"
 gradle-plugin-version-catalog-update-version = "0.8.4"
 gradle-plugin-versions-version = "0.51.0"
-junit-jupiter-params-version = "5.11.1"
-junit-jupiter-version = "5.11.1"
-junit-platform-launcher-version = "1.11.1"
+jul-to-slf4j-version = "2.1.0-alpha1"
+junit-jupiter-params-version = "5.11.2"
+junit-jupiter-version = "5.11.2"
+logback-classic-version = "1.5.8"
 lombok-version = "1.18.34"
 meanbean-version = "3.0.0-M9"
 mockito-core-version = "5.14.1"
 pdfbox-version = "3.0.3"
 silly-collection-version = "28"
 silly-io-version = "3.1"
+slf4j-api-version = "2.1.0-alpha1"
 tess4j-version = "5.13.0"
 test-object-version = "9"
 throwable-version = "3"
@@ -29,9 +31,11 @@ commons-text = { module = "org.apache.commons:commons-text", version.ref = "comm
 equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version.ref = "equalsverifier-version" }
 file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version" }
 gradle-migration-data = { module = "io.github.astrapi69:gradle-migration-data", version.ref = "gradle-migration-data-version" }
+jul-to-slf4j = { module = "org.slf4j:jul-to-slf4j", version.ref = "jul-to-slf4j-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version" }
 junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter-params-version" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher-version" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic-version" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok-version" }
 meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-core-version" }
@@ -39,6 +43,7 @@ mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-version" }
 silly-collection = { module = "io.github.astrapi69:silly-collection", version.ref = "silly-collection-version" }
 silly-io = { module = "io.github.astrapi69:silly-io", version.ref = "silly-io-version" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api-version" }
 tess4j = { module = "net.sourceforge.tess4j:tess4j", version.ref = "tess4j-version" }
 test-object = { module = "io.github.astrapi69:test-object", version.ref = "test-object-version" }
 throwable = { module = "io.github.astrapi69:throwable", version.ref = "throwable-version" }
@@ -54,10 +59,16 @@ compile-only = [
 ]
 # Bundle of the core dependencies
 core-dependencies = [
-    "pdfbox",
-    "tess4j",
-    "silly-io",
     "file-worker",
+    "pdfbox",
+    "silly-io",
+    "tess4j",
+]
+# Bundle of the logging dependencies
+logging = [
+    "jul-to-slf4j",
+    "logback-classic",
+    "slf4j-api",
 ]
 # Annotation processor dependencies used specifically for test classes
 test-annotation-processor = [

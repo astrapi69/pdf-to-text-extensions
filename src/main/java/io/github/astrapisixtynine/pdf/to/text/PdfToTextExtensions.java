@@ -1,3 +1,27 @@
+/**
+ * The MIT License
+ *
+ * Copyright (C) 2022 Asterios Raptis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package io.github.astrapisixtynine.pdf.to.text;
 
 import java.awt.image.BufferedImage;
@@ -8,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 
@@ -24,6 +49,7 @@ import io.github.astrapi69.io.file.FileExtension;
 import io.github.astrapi69.io.file.FilenameExtensions;
 import io.github.astrapi69.io.shell.LinuxShellExecutor;
 import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
+import lombok.extern.java.Log;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
@@ -31,6 +57,7 @@ import net.sourceforge.tess4j.TesseractException;
  * The class {@link PdfToTextExtensions} provides functionality to convert a PDF file into a text
  * file using either direct text extraction or Optical Character Recognition (OCR)
  */
+@Log
 public final class PdfToTextExtensions
 {
 
@@ -42,7 +69,7 @@ public final class PdfToTextExtensions
 	}
 
 	/**
-	 * Converts a PDF file to a text file extracting text from all pages
+	 * Converts a text PDF file to a text file extracting text from all pages
 	 *
 	 * @param pdfFile
 	 *            the input PDF file
@@ -63,7 +90,8 @@ public final class PdfToTextExtensions
 	}
 
 	/**
-	 * Converts a PDF file to a text file, with the option to specify a range of pages to extract
+	 * Converts a text PDF file to a text file, with the option to specify a range of pages to
+	 * extract
 	 *
 	 * @param pdfFile
 	 *            the input PDF file
@@ -99,7 +127,7 @@ public final class PdfToTextExtensions
 	}
 
 	/**
-	 * Converts a PDF file to text using image processing and OCR
+	 * Converts a text or image PDF file to text using image processing and OCR
 	 *
 	 * @param pdfFile
 	 *            the input PDF file
@@ -136,7 +164,7 @@ public final class PdfToTextExtensions
 	}
 
 	/**
-	 * Converts image files into text files using Tesseract OCR
+	 * Converts text or image PDF files into text files using Tesseract OCR
 	 *
 	 * @param imageFiles
 	 *            the list of image files to be processed
@@ -165,8 +193,9 @@ public final class PdfToTextExtensions
 			String imageFileName = imageFile.getName();
 			String textFileName = FilenameExtensions.getFilenameWithoutExtension(imageFile);
 			command = commandPrefix + " " + imageFileName + " " + textFileName + " -l deu";
+			log.log(Level.INFO, "Executing command: " + command);
 			output = LinuxShellExecutor.execute(shellPath, executionPath, command);
-			System.out.println(output);
+			log.log(Level.INFO, "Output from command: " + output);
 			File textFile = new File(resultDir, textFileName + ".txt");
 			textFiles.add(textFile);
 		}
@@ -174,7 +203,7 @@ public final class PdfToTextExtensions
 	}
 
 	/**
-	 * Converts a PDF file into image files for each page
+	 * Converts a text or image PDF file into image files for each page
 	 *
 	 * @param pdfFile
 	 *            the input PDF file

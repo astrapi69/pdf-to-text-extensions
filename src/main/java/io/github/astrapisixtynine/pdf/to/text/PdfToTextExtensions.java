@@ -25,10 +25,12 @@
 package io.github.astrapisixtynine.pdf.to.text;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -274,4 +276,38 @@ public final class PdfToTextExtensions
 		tesseract.setLanguage(language);
 		return tesseract.doOCR(imageFile);
 	}
+
+	/**
+	 * Checks if Tesseract OCR is installed on the system by executing the "tesseract --version"
+	 * command.
+	 *
+	 * @return true if Tesseract is installed and available in the system's PATH; false otherwise.
+	 */
+	public static boolean isTesseractInstalled()
+	{
+		try
+		{
+			// Try to execute the "tesseract" command
+			ProcessBuilder processBuilder = new ProcessBuilder("tesseract", "--version");
+			Process process = processBuilder.start();
+
+			// Read the output
+			BufferedReader reader = new BufferedReader(
+				new InputStreamReader(process.getInputStream()));
+			String output = reader.readLine();
+
+			// Wait for the process to complete and check the exit value
+			int exitCode = process.waitFor();
+
+			// Check if the command was successful and if the output contains Tesseract version
+			// information
+			return exitCode == 0 && output != null && output.contains("tesseract");
+		}
+		catch (Exception e)
+		{
+			// If any exception occurs, Tesseract is likely not installed or not in the system PATH
+			return false;
+		}
+	}
+
 }

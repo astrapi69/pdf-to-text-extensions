@@ -102,7 +102,7 @@ class PdfToTextExtensionsParameterizedTest
 	void testExtractTextFromImageWithDifferentLanguages(String language) throws Exception
 	{
 		File imageFile = new File("src/test/resources/sample-image.png");
-		String datapath = "/usr/share/tesseract-ocr/4.00/tessdata";
+		String datapath = "/usr/share/tessdata";
 		String result = PdfToTextExtensions.extractTextFromImage(imageFile, datapath, language);
 		assertNotNull(result);
 		assertFalse(result.isEmpty());

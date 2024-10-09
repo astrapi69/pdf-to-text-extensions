@@ -10,9 +10,15 @@ ADDED:
 - new dependency org.slf4j:jul-to-slf4j in version 2.1.0-alpha1 for logging
 - new dependency ch.qos.logback:logback-classic in version 2.1.0-alpha1 for logging
 - new bundle for logging dependencies
+- new method that checks if tesseract is installed
 
 CHANGED:
 
+- update of gradle-plugin dependency with id 'io.freefair.lombok' to new patch version 8.10.2
+- update of gradle-plugin dependency with id 'org.ajoberstar.grgit' to new patch version 5.3.0
+- update of dependency file-worker to new version 18.0
+- update of dependency silly-io to new version 3.2
+- update of test dependency silly-collection to new major version 28.1
 - update of test dependencies junit-jupiter to new version 5.11.2
 - update of test dependencies junit-platform-launcher to new version 1.11.2
 

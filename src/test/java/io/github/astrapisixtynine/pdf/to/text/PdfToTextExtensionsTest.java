@@ -40,6 +40,7 @@ import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
+import net.sourceforge.tess4j.TesseractException;
 
 /**
  * Test class for {@link PdfToTextExtensions}
@@ -126,7 +127,7 @@ class PdfToTextExtensionsTest
 		The location of the PDF file must be the 'test resource folder'
 		The output is generated in the subfolder 'text-result' of the 'test resource folder'
 		""")
-	void extractTextFromImage() throws IOException, InterruptedException
+	void extractTextFromImagePdf() throws IOException, InterruptedException
 	{
 		String pdfFileName;
 		String fileName;
@@ -142,6 +143,38 @@ class PdfToTextExtensionsTest
 
 		DeleteFileExtensions.delete(conversionResult.getImageFiles());
 		DeleteFileExtensions.delete(conversionResult.getTextFiles());
+	}
+
+	/**
+	 * Tests the method {@link PdfToTextExtensions#extractTextFromImage(File, String, String)}
+	 */
+	@Test
+	void extractTextFromImage() throws TesseractException
+	{
+		String language = "deu";
+		File imageFile = new File("src/test/resources/sample-image.png");
+		String datapath = "/usr/share/tessdata";
+		String result = PdfToTextExtensions.extractTextFromImage(imageFile, datapath, language);
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
+	}
+
+	/**
+	 * Tests if the method correctly detects when Tesseract is installed. This test will pass if
+	 * Tesseract is installed and available in the system's PATH.
+	 */
+	@Test
+	@Disabled("""
+		only for local use:
+		if tesseract is installed
+		""")
+	public void testIsTesseractInstalledWhenInstalled()
+	{
+		// This test assumes that Tesseract is installed on the system.
+		boolean isInstalled = PdfToTextExtensions.isTesseractInstalled();
+
+		// Tesseract should be installed, so the result should be true.
+		assertTrue(isInstalled, "Tesseract should be installed on the system.");
 	}
 
 	/**

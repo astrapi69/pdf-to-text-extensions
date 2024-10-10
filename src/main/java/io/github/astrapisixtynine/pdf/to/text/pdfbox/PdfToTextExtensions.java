@@ -22,15 +22,13 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapisixtynine.pdf.to.text;
+package io.github.astrapisixtynine.pdf.to.text.pdfbox;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,15 +43,12 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 import io.github.astrapi69.file.create.FileFactory;
-import io.github.astrapi69.file.read.ReadFileExtensions;
-import io.github.astrapi69.file.write.StoreFileExtensions;
+import io.github.astrapi69.file.modify.ModifyFileExtensions;
 import io.github.astrapi69.io.file.FileExtension;
 import io.github.astrapi69.io.file.FilenameExtensions;
 import io.github.astrapi69.io.shell.LinuxShellExecutor;
 import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
 import lombok.extern.java.Log;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
 
 /**
  * The class {@link PdfToTextExtensions} provides functionality to convert a PDF file into a text
@@ -159,7 +154,7 @@ public final class PdfToTextExtensions
 		List<File> textFiles = getTextFiles(imageFiles, outputDir, shellPath);
 
 		// step 3: concatenate all text files to one
-		concatenateAll(textFiles, resultTextFile);
+		ModifyFileExtensions.concatenateAll(textFiles, resultTextFile);
 
 		return ConversionResult.builder().imageFiles(imageFiles).textFiles(textFiles)
 			.resultTextFile(resultTextFile).build();
@@ -231,83 +226,6 @@ public final class PdfToTextExtensions
 			}
 		}
 		return imageFiles;
-	}
-
-	/**
-	 * Concatenates the contents of all text files into a single text file
-	 *
-	 * @param textFiles
-	 *            the list of text files to concatenate
-	 * @param resultTextFile
-	 *            the final result text file that will contain the concatenated content
-	 * @throws IOException
-	 *             if an I/O error occurs
-	 */
-	public static void concatenateAll(List<File> textFiles, File resultTextFile) throws IOException
-	{
-		StringBuilder text = new StringBuilder();
-		for (int i = 0; i < textFiles.size(); ++i)
-		{
-			File textFile = textFiles.get(i);
-			String content = ReadFileExtensions.fromFile(textFile);
-			text.append(content);
-		}
-		StoreFileExtensions.toFile(resultTextFile, text.toString());
-	}
-
-	/**
-	 * Extracts text from a single image file using Tesseract OCR
-	 *
-	 * @param imageFile
-	 *            the image file to process
-	 * @param datapath
-	 *            the path to Tesseract data files
-	 * @param language
-	 *            the language to use for OCR
-	 * @return the extracted text
-	 * @throws TesseractException
-	 *             if an error occurs during OCR
-	 */
-	public static String extractTextFromImage(File imageFile, String datapath, String language)
-		throws TesseractException
-	{
-		Tesseract tesseract = new Tesseract();
-		tesseract.setDatapath(datapath);
-		tesseract.setLanguage(language);
-		return tesseract.doOCR(imageFile);
-	}
-
-	/**
-	 * Checks if Tesseract OCR is installed on the system by executing the "tesseract --version"
-	 * command.
-	 *
-	 * @return true if Tesseract is installed and available in the system's PATH; false otherwise.
-	 */
-	public static boolean isTesseractInstalled()
-	{
-		try
-		{
-			// Try to execute the "tesseract" command
-			ProcessBuilder processBuilder = new ProcessBuilder("tesseract", "--version");
-			Process process = processBuilder.start();
-
-			// Read the output
-			BufferedReader reader = new BufferedReader(
-				new InputStreamReader(process.getInputStream()));
-			String output = reader.readLine();
-
-			// Wait for the process to complete and check the exit value
-			int exitCode = process.waitFor();
-
-			// Check if the command was successful and if the output contains Tesseract version
-			// information
-			return exitCode == 0 && output != null && output.contains("tesseract");
-		}
-		catch (Exception e)
-		{
-			// If any exception occurs, Tesseract is likely not installed or not in the system PATH
-			return false;
-		}
 	}
 
 }

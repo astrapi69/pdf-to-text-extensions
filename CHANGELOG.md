@@ -6,6 +6,7 @@ Version 1.1-SNAPSHOT
 
 ADDED:
 
+- new class ImagePdfToTextExtensions that provides conversion only with tess4j library
 - new dependency org.slf4j:slf4j-api in version 2.1.0-alpha1 for logging
 - new dependency org.slf4j:jul-to-slf4j in version 2.1.0-alpha1 for logging
 - new dependency ch.qos.logback:logback-classic in version 2.1.0-alpha1 for logging
@@ -21,6 +22,7 @@ CHANGED:
 - update of test dependency silly-collection to new major version 28.1
 - update of test dependencies junit-jupiter to new version 5.11.2
 - update of test dependencies junit-platform-launcher to new version 1.11.2
+- moved PdfToTextExtensions to its own package 'io.github.astrapisixtynine.pdf.to.text.pdfbox'
 
 Version 1.0
 -------------

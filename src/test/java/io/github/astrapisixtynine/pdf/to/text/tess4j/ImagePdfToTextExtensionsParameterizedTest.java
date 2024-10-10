@@ -22,73 +22,23 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapisixtynine.pdf.to.text;
+package io.github.astrapisixtynine.pdf.to.text.tess4j;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import io.github.astrapi69.file.create.DirectoryFactory;
-import io.github.astrapi69.file.create.FileFactory;
-import io.github.astrapi69.file.delete.DeleteFileExtensions;
-import io.github.astrapi69.file.search.PathFinder;
 
 /**
- * Parameterized test class for {@link PdfToTextExtensions}
+ * Parameterized test class for {@link ImagePdfToTextExtensions}
  */
-class PdfToTextExtensionsParameterizedTest
+class ImagePdfToTextExtensionsParameterizedTest
 {
-
-	private File pdfFile;
-	private File outputDir;
-
-	/**
-	 * Sets up test data before each test
-	 */
-	@BeforeEach
-	void setUp()
-	{
-		pdfFile = FileFactory.newFileQuietly(PathFinder.getSrcTestResourcesDir(), "sample.pdf");
-		outputDir = DirectoryFactory.newDirectory(PathFinder.getSrcTestResourcesDir(), "output");
-	}
-
-	/**
-	 * cleans up after each test
-	 */
-	@AfterEach
-	void tearDown() throws IOException
-	{
-		if (outputDir != null)
-		{
-			DeleteFileExtensions.delete(outputDir);
-		}
-	}
-
-	/**
-	 * Parameterized test for extracting text from a range of pages
-	 *
-	 * @param startPage
-	 *            starting page for text extraction
-	 * @param endPage
-	 *            ending page for text extraction
-	 */
-	@ParameterizedTest
-	@CsvFileSource(resources = "/page-range-tests.csv", numLinesToSkip = 1)
-	void testPdfToTextWithPageRange(int startPage, int endPage) throws IOException
-	{
-		File resultFile = PdfToTextExtensions.pdfToText(pdfFile, outputDir, startPage, endPage);
-		assertNotNull(resultFile);
-		assertTrue(resultFile.exists());
-	}
-
 
 	/**
 	 * Parameterized test for extracting text from image files using various languages
@@ -103,7 +53,8 @@ class PdfToTextExtensionsParameterizedTest
 	{
 		File imageFile = new File("src/test/resources/sample-image.png");
 		String datapath = "/usr/share/tessdata";
-		String result = PdfToTextExtensions.extractTextFromImage(imageFile, datapath, language);
+		String result = ImagePdfToTextExtensions.extractTextFromImage(imageFile, datapath,
+			language);
 		assertNotNull(result);
 		assertFalse(result.isEmpty());
 	}

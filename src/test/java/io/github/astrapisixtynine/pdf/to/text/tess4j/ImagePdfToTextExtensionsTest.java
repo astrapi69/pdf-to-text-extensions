@@ -44,6 +44,10 @@ class ImagePdfToTextExtensionsTest
 	 * Tests the method {@link ImagePdfToTextExtensions#extractTextFromImage(File, String, String)}
 	 */
 	@Test
+	@Disabled("""
+		only for local use:
+		if tesseract is installed
+		""")
 	void extractTextFromImage() throws TesseractException
 	{
 		String language = "deu";

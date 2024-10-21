@@ -27,6 +27,8 @@ package io.github.astrapisixtynine.pdf.to.text.tess4j;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,33 @@ import net.sourceforge.tess4j.TesseractException;
  */
 class ImagePdfToTextExtensionsTest
 {
+
+	/**
+	 * Tests the method {@link ImagePdfToTextExtensions#getTextContent(List, String, String)} with
+	 * multiple image files.
+	 */
+	@Test
+	@Disabled("""
+		only for local use:
+		if tesseract is installed
+		""")
+	void testGetTextContent() throws TesseractException
+	{
+		// Arrange
+		String language = "deu";
+		String datapath = "/usr/share/tessdata";
+		List<File> imageFiles = new ArrayList<>();
+		imageFiles.add(new File("src/test/resources/test-result/sample-image-1.png"));
+		imageFiles.add(new File("src/test/resources/test-result/sample-image-2.png"));
+		imageFiles.add(new File("src/test/resources/test-result/sample-image-3.png"));
+
+		// Act
+		String result = ImagePdfToTextExtensions.getTextContent(imageFiles, datapath, language);
+
+		// Assert
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
+	}
 
 	/**
 	 * Tests the method {@link ImagePdfToTextExtensions#extractTextFromImage(File, String, String)}
@@ -61,7 +90,7 @@ class ImagePdfToTextExtensionsTest
 
 	/**
 	 * Tests if the method correctly detects when Tesseract is installed. This test will pass if
-	 * Tesseract is installed and available in the system's PATH.
+	 * Tesseract is installed and available in the system's PATH
 	 */
 	@Test
 	@Disabled("""
@@ -70,11 +99,8 @@ class ImagePdfToTextExtensionsTest
 		""")
 	public void testIsTesseractInstalledWhenInstalled()
 	{
-		// This test assumes that Tesseract is installed on the system.
 		boolean isInstalled = ImagePdfToTextExtensions.isTesseractInstalled();
-
-		// Tesseract should be installed, so the result should be true.
-		assertTrue(isInstalled, "Tesseract should be installed on the system.");
+		assertTrue(isInstalled, "Tesseract should be installed on the system");
 	}
 
 	/**
@@ -86,4 +112,5 @@ class ImagePdfToTextExtensionsTest
 		final BeanTester beanTester = new BeanTester();
 		beanTester.testBean(ImagePdfToTextExtensions.class);
 	}
+
 }

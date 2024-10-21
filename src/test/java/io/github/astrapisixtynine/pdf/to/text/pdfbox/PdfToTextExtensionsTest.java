@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,6 +73,28 @@ class PdfToTextExtensionsTest
 		}
 	}
 
+
+	/**
+	 * Tests the method {@link PdfToTextExtensions#getImageFiles(File, File)}
+	 */
+	@Test
+	void getImageFiles() throws IOException
+	{
+
+		String pdfFileName;
+		String fileName;
+		fileName = "program-image";
+		pdfFileName = fileName + ".pdf";
+
+		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), pdfFileName);
+
+		File resultDir = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"text-result");
+		List<File> imageFiles = PdfToTextExtensions.getImageFiles(pdfFile, resultDir);
+		DeleteFileExtensions.delete(imageFiles);
+		DeleteFileExtensions.delete(resultDir);
+	}
+
 	/**
 	 * Tests the method {@link PdfToTextExtensions#pdfToText(File, File)}
 	 */
@@ -110,6 +133,34 @@ class PdfToTextExtensionsTest
 	@Disabled("fails on github-actions")
 	void testConvertPdfToTextfile() throws IOException, InterruptedException
 	{
+		ConversionResult result = PdfToTextExtensions.convertPdfToTextfile(pdfFile, outputDir);
+		assertNotNull(result);
+		assertFalse(result.getImageFiles().isEmpty());
+		assertFalse(result.getTextFiles().isEmpty());
+		assertTrue(result.getResultTextFile().exists());
+	}
+
+	/**
+	 * Tests the method {@link PdfToTextExtensions#convertPdfToTextfile(File, File)}
+	 */
+	@Test
+	@Disabled("""
+		fails on github-actions
+		only for local use:
+		pdfFileName is the pdf file
+		in the outputDir will be generated the text files
+		""")
+	void testConvertPdfToTextfiles() throws IOException, InterruptedException
+	{
+		String pdfFileName;
+		String fileName;
+		fileName = "sample";
+		pdfFileName = fileName + ".pdf";
+
+		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), pdfFileName);
+
+		File outputDir = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+			"test-result");
 		ConversionResult result = PdfToTextExtensions.convertPdfToTextfile(pdfFile, outputDir);
 		assertNotNull(result);
 		assertFalse(result.getImageFiles().isEmpty());

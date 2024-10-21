@@ -27,6 +27,7 @@ package io.github.astrapisixtynine.pdf.to.text.tess4j;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import lombok.extern.java.Log;
 import net.sourceforge.tess4j.Tesseract;
@@ -34,7 +35,8 @@ import net.sourceforge.tess4j.TesseractException;
 
 /**
  * The class {@link ImagePdfToTextExtensions} provides functionality to convert a PDF file into a
- * text file using either direct text extraction or Optical Character Recognition (OCR)
+ * text file using either direct text extraction or Optical Character Recognition (OCR) through
+ * Tesseract OCR
  */
 @Log
 public final class ImagePdfToTextExtensions
@@ -45,6 +47,33 @@ public final class ImagePdfToTextExtensions
 	 */
 	private ImagePdfToTextExtensions()
 	{
+	}
+
+	/**
+	 * Converts image files into text using Tesseract OCR
+	 *
+	 * @param imageFiles
+	 *            the list of image files to be processed
+	 * @param datapath
+	 *            the path to Tesseract data files
+	 * @param language
+	 *            the language to use for OCR
+	 * @return the {@link String} object that contains the result
+	 * @throws TesseractException
+	 *             if an error occurs during OCR
+	 */
+	public static String getTextContent(List<File> imageFiles, String datapath, String language)
+		throws TesseractException
+	{
+		StringBuilder stringBuffer = new StringBuilder();
+		for (int page = 0; page < imageFiles.size(); ++page)
+		{
+			File imageFile = imageFiles.get(page);
+			String string = extractTextFromImage(imageFile, datapath, language);
+			stringBuffer.append(string);
+
+		}
+		return stringBuffer.toString();
 	}
 
 	/**
@@ -71,35 +100,27 @@ public final class ImagePdfToTextExtensions
 
 	/**
 	 * Checks if Tesseract OCR is installed on the system by executing the "tesseract --version"
-	 * command.
+	 * command
 	 *
-	 * @return true if Tesseract is installed and available in the system's PATH; false otherwise.
+	 * @return true if Tesseract is installed and available in the system's PATH; false otherwise
 	 */
 	public static boolean isTesseractInstalled()
 	{
 		try
 		{
-			// Try to execute the "tesseract" command
 			ProcessBuilder processBuilder = new ProcessBuilder("tesseract", "--version");
 			Process process = processBuilder.start();
 
-			// Read the output
 			BufferedReader reader = new BufferedReader(
 				new InputStreamReader(process.getInputStream()));
 			String output = reader.readLine();
 
-			// Wait for the process to complete and check the exit value
 			int exitCode = process.waitFor();
-
-			// Check if the command was successful and if the output contains Tesseract version
-			// information
 			return exitCode == 0 && output != null && output.contains("tesseract");
 		}
 		catch (Exception e)
 		{
-			// If any exception occurs, Tesseract is likely not installed or not in the system PATH
 			return false;
 		}
 	}
-
 }

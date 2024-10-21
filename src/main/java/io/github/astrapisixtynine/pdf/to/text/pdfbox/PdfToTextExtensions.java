@@ -221,6 +221,7 @@ public final class PdfToTextExtensions
 			{
 				BufferedImage image = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
 				File imageFile = new File(outputDir, fileName + "page_" + (page + 1) + ".png");
+				FileFactory.newFile(imageFile);
 				ImageIO.write(image, "png", imageFile);
 				imageFiles.add(imageFile);
 			}

@@ -25,8 +25,7 @@ CHANGED:
 - update of dependency logback-classic to new version 1.5.11
 - update of test dependency silly-collection to new major version 28.1
 - update of test dependencies mockito-core to new version 5.14.2
-- update of test dependencies junit-jupiter to new version 5.11.2
-- update of test dependencies junit-platform-launcher to new version 1.11.2
+- update of test dependencies junit-jupiter-* to new version 5.11.3
 - moved PdfToTextExtensions to its own package 'io.github.astrapisixtynine.pdf.to.text.pdfbox'
 
 Version 1.0

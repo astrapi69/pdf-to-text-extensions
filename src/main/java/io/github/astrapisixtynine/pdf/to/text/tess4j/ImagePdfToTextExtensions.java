@@ -26,9 +26,18 @@ package io.github.astrapisixtynine.pdf.to.text.tess4j;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
+import io.github.astrapi69.file.create.FileFactory;
+import io.github.astrapi69.file.modify.ModifyFileExtensions;
+import io.github.astrapi69.file.write.StoreFileExtensions;
+import io.github.astrapi69.io.file.FileExtension;
+import io.github.astrapi69.io.file.FilenameExtensions;
+import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
+import io.github.astrapisixtynine.pdf.to.text.pdfbox.PdfToTextExtensions;
 import lombok.extern.java.Log;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -47,6 +56,81 @@ public final class ImagePdfToTextExtensions
 	 */
 	private ImagePdfToTextExtensions()
 	{
+	}
+
+	/**
+	 * Converts a text or image PDF file to text using image processing and OCR
+	 *
+	 * @param pdfFile
+	 *            the input PDF file
+	 * @param outputDir
+	 *            the directory where the output files will be stored
+	 * @param datapath
+	 *            the path to Tesseract data files
+	 * @param language
+	 *            the language to use for OCR
+	 * @return the result of the conversion containing image files, text files, and the final result
+	 *         text file
+	 * @return the list of generated text files
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @throws TesseractException
+	 *             if an error occurs during OCR
+	 */
+	public static ConversionResult convertPdfToTextfile(File pdfFile, File outputDir,
+		String datapath, String language) throws IOException, TesseractException
+	{
+
+		String txtFileName;
+		String fileName;
+		fileName = FilenameExtensions.getFilenameWithoutExtension(pdfFile);
+		txtFileName = fileName + FileExtension.TXT.getExtension();
+		File resultTextFile = FileFactory.newFile(outputDir, txtFileName);
+
+		// step 1: convert the pdf file to image files
+		List<File> imageFiles = PdfToTextExtensions.getImageFiles(pdfFile, outputDir);
+
+		// step 2: convert the image files to text files
+		List<File> textFiles = getTextFiles(imageFiles, outputDir, datapath, language);
+
+		// step 3: concatenate all text files to one
+		ModifyFileExtensions.concatenateAll(textFiles, resultTextFile);
+
+		return ConversionResult.builder().imageFiles(imageFiles).textFiles(textFiles)
+			.resultTextFile(resultTextFile).build();
+	}
+
+	/**
+	 * Converts text or image PDF files into text files using Tesseract OCR
+	 *
+	 * @param imageFiles
+	 *            the list of image files to be processed
+	 * @param resultDir
+	 *            the directory where the text files will be stored
+	 * @param datapath
+	 *            the path to Tesseract data files
+	 * @param language
+	 *            the language to use for OCR
+	 * @return the list of generated text files
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @throws TesseractException
+	 *             if an error occurs during OCR
+	 */
+	public static List<File> getTextFiles(List<File> imageFiles, File resultDir, String datapath,
+		String language) throws IOException, TesseractException
+	{
+		List<File> textFiles = new ArrayList<>();
+		for (int page = 0; page < imageFiles.size(); ++page)
+		{
+			File imageFile = imageFiles.get(page);
+			String textFileName = FilenameExtensions.getFilenameWithoutExtension(imageFile);
+			String string = extractTextFromImage(imageFile, datapath, language);
+			File textFile = new File(resultDir, textFileName + ".txt");
+			StoreFileExtensions.toFile(textFile, string);
+			textFiles.add(textFile);
+		}
+		return textFiles;
 	}
 
 	/**

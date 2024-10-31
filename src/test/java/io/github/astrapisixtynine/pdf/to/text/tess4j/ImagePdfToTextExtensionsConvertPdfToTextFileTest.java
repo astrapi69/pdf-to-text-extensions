@@ -28,12 +28,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.meanbean.test.BeanTester;
 
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
@@ -41,14 +38,14 @@ import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
 import net.sourceforge.tess4j.TesseractException;
 
 /**
- * Test class for {@link ImagePdfToTextExtensions}
+ * Test class for the {@link ImagePdfToTextExtensions} class, specifically the
+ * {@link ImagePdfToTextExtensions#convertPdfToTextfile(File, File, String, String)} method
  */
-class ImagePdfToTextExtensionsTest
+class ImagePdfToTextExtensionsConvertPdfToTextFileTest
 {
 
 	/**
 	 * Tests the {@link ImagePdfToTextExtensions#convertPdfToTextfile(File, File, String, String)}
-	 * method by converting a sample PDF file to text and verifying the conversion result.
 	 *
 	 * @throws IOException
 	 *             if an I/O error occurs during file handling
@@ -57,12 +54,16 @@ class ImagePdfToTextExtensionsTest
 	 */
 	@Disabled("""
 		only for local use:
-		if tesseract is installed
+		if
+		    tesseract is installed
+		than
+		          Replace 'fileName' with the name of your PDF file name without the extension.
+		          The location of the PDF file must be the 'test resource folder'
+		          The output is generated in the subfolder 'text-result' of the 'test resource folder'
 		""")
 	@Test
-	void testConvertPdfToTextfile() throws IOException, TesseractException, IOException
+	void testConvertPdfToTextfile() throws IOException, TesseractException
 	{
-
 		String pdfFileName;
 		String fileName;
 		fileName = "program-image";
@@ -99,76 +100,4 @@ class ImagePdfToTextExtensionsTest
 		DeleteFileExtensions.delete(conversionResult.getImageFiles());
 		DeleteFileExtensions.delete(conversionResult.getTextFiles());
 	}
-
-	/**
-	 * Tests the method {@link ImagePdfToTextExtensions#getTextContent(List, String, String)} with
-	 * multiple image files.
-	 */
-	@Test
-	@Disabled("""
-		only for local use:
-		if tesseract is installed
-		""")
-	void testGetTextContent() throws TesseractException
-	{
-		// Arrange
-		String language = "deu";
-		String datapath = "/usr/share/tessdata";
-		List<File> imageFiles = new ArrayList<>();
-		imageFiles.add(new File("src/test/resources/test-result/sample-image-1.png"));
-		imageFiles.add(new File("src/test/resources/test-result/sample-image-2.png"));
-		imageFiles.add(new File("src/test/resources/test-result/sample-image-3.png"));
-
-		// Act
-		String result = ImagePdfToTextExtensions.getTextContent(imageFiles, datapath, language);
-
-		// Assert
-		assertNotNull(result);
-		assertFalse(result.isEmpty());
-	}
-
-	/**
-	 * Tests the method {@link ImagePdfToTextExtensions#extractTextFromImage(File, String, String)}
-	 */
-	@Test
-	@Disabled("""
-		only for local use:
-		if tesseract is installed
-		""")
-	void extractTextFromImage() throws TesseractException
-	{
-		String language = "deu";
-		File imageFile = new File("src/test/resources/sample-image.png");
-		String datapath = "/usr/share/tessdata";
-		String result = ImagePdfToTextExtensions.extractTextFromImage(imageFile, datapath,
-			language);
-		assertNotNull(result);
-		assertFalse(result.isEmpty());
-	}
-
-	/**
-	 * Tests if the method correctly detects when Tesseract is installed. This test will pass if
-	 * Tesseract is installed and available in the system's PATH
-	 */
-	@Test
-	@Disabled("""
-		only for local use:
-		if tesseract is installed
-		""")
-	public void testIsTesseractInstalledWhenInstalled()
-	{
-		boolean isInstalled = ImagePdfToTextExtensions.isTesseractInstalled();
-		assertTrue(isInstalled, "Tesseract should be installed on the system");
-	}
-
-	/**
-	 * Test method for {@link ImagePdfToTextExtensions} with {@link BeanTester}
-	 */
-	@Test
-	public void testWithBeanTester()
-	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(ImagePdfToTextExtensions.class);
-	}
-
 }

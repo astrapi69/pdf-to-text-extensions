@@ -68,6 +68,9 @@ class ImagePdfToTextExtensionsConvertPdfToTextFileTest
 		String fileName;
 		fileName = "program-image";
 		pdfFileName = fileName + ".pdf";
+		boolean cleanUp = true;
+
+		// cleanUp = false;
 
 		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), pdfFileName);
 
@@ -96,8 +99,11 @@ class ImagePdfToTextExtensionsConvertPdfToTextFileTest
 		assertTrue(conversionResult.getResultTextFile().length() > 0,
 			"Result text file should contain data");
 		// clean up
-		DeleteFileExtensions.delete(conversionResult.getResultTextFile());
-		DeleteFileExtensions.delete(conversionResult.getImageFiles());
-		DeleteFileExtensions.delete(conversionResult.getTextFiles());
+		if (cleanUp)
+		{
+			DeleteFileExtensions.delete(conversionResult.getResultTextFile());
+			DeleteFileExtensions.delete(conversionResult.getImageFiles());
+			DeleteFileExtensions.delete(conversionResult.getTextFiles());
+		}
 	}
 }

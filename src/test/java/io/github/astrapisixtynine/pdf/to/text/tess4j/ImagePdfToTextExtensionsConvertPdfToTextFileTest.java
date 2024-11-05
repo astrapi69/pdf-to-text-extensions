@@ -75,7 +75,7 @@ class ImagePdfToTextExtensionsConvertPdfToTextFileTest
 		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), pdfFileName);
 
 		File outputDirectory = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
-			"test-result");
+			"text-result");
 		String datapath = "/usr/share/tessdata";
 		String language = "deu";
 

@@ -32,6 +32,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.file.create.DirectoryFactory;
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
@@ -66,6 +67,8 @@ class ImagePdfToTextExtensionsConvertPdfToTextFileTest
 	{
 		String pdfFileName;
 		String fileName;
+		File outputDirectory;
+
 		fileName = "program-image";
 		pdfFileName = fileName + ".pdf";
 		boolean cleanUp = true;
@@ -74,8 +77,12 @@ class ImagePdfToTextExtensionsConvertPdfToTextFileTest
 
 		File pdfFile = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(), pdfFileName);
 
-		File outputDirectory = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
+		outputDirectory = PathFinder.getRelativePath(PathFinder.getSrcTestResourcesDir(),
 			"text-result");
+		if (!outputDirectory.exists())
+		{
+			DirectoryFactory.newDirectory(outputDirectory);
+		}
 		String datapath = "/usr/share/tessdata";
 		String language = "deu";
 
@@ -104,6 +111,7 @@ class ImagePdfToTextExtensionsConvertPdfToTextFileTest
 			DeleteFileExtensions.delete(conversionResult.getResultTextFile());
 			DeleteFileExtensions.delete(conversionResult.getImageFiles());
 			DeleteFileExtensions.delete(conversionResult.getTextFiles());
+			DeleteFileExtensions.delete(outputDirectory);
 		}
 	}
 }

@@ -4,6 +4,10 @@
 Version 1.2-SNAPSHOT
 -------------
 
+CHANGED:
+
+- update gradle to new version 8.11-rc-2
+- update of test dependency equalsverifier to new version 3.17.2
 
 Version 1.1
 -------------

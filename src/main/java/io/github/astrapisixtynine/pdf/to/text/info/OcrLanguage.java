@@ -25,21 +25,68 @@
 package io.github.astrapisixtynine.pdf.to.text.info;
 
 /**
- * Enum representing available languages for Tesseract OCR.
+ * Enum representing available languages for Tesseract OCR
  */
 public enum OcrLanguage
 {
-	ENGLISH("English", "eng"), GERMAN("German", "deu"), FRENCH("French", "fra"), SPANISH("Spanish",
-		"spa"), ITALIAN("Italian", "ita"), DUTCH("Dutch", "nld"), PORTUGUESE("Portuguese",
-			"por"), RUSSIAN("Russian", "rus"), CHINESE_SIMPLIFIED("Chinese (Simplified)",
-				"chi_sim"), CHINESE_TRADITIONAL("Chinese (Traditional)", "chi_tra"), JAPANESE(
-					"Japanese", "jpn"), KOREAN("Korean", "kor"), GREEK("Greek", "ell");
+	/**
+	 * English OCR language
+	 */
+	ENGLISH("English", "eng"),
+	/**
+	 * German OCR language
+	 */
+	GERMAN("German", "deu"),
+	/**
+	 * French OCR language
+	 */
+	FRENCH("French", "fra"),
+	/**
+	 * Spanish OCR language
+	 */
+	SPANISH("Spanish", "spa"),
+	/**
+	 * Italian OCR language
+	 */
+	ITALIAN("Italian", "ita"),
+	/**
+	 * Dutch OCR language
+	 */
+	DUTCH("Dutch", "nld"),
+	/**
+	 * Portuguese OCR language
+	 */
+	PORTUGUESE("Portuguese", "por"),
+	/**
+	 * Russian OCR language
+	 */
+	RUSSIAN("Russian", "rus"),
+	/**
+	 * Chinese (Simplified) OCR language
+	 */
+	CHINESE_SIMPLIFIED("Chinese (Simplified)", "chi_sim"),
+	/**
+	 * Chinese (Traditional) OCR language
+	 */
+	CHINESE_TRADITIONAL("Chinese (Traditional)", "chi_tra"),
+	/**
+	 * Japanese OCR language
+	 */
+	JAPANESE("Japanese", "jpn"),
+	/**
+	 * Korean OCR language
+	 */
+	KOREAN("Korean", "kor"),
+	/**
+	 * Greek OCR language
+	 */
+	GREEK("Greek", "ell");
 
 	private final String displayName;
 	private final String code;
 
 	/**
-	 * Constructs an {@code OcrLanguage} enum with the specified display name and language code.
+	 * Constructs an {@code OcrLanguage} enum with the specified display name and language code
 	 *
 	 * @param displayName
 	 *            the name displayed in the UI
@@ -53,7 +100,7 @@ public enum OcrLanguage
 	}
 
 	/**
-	 * Gets the display name of the language.
+	 * Gets the display name of the language
 	 *
 	 * @return the display name of the language
 	 */
@@ -63,7 +110,7 @@ public enum OcrLanguage
 	}
 
 	/**
-	 * Gets the Tesseract language code for this language.
+	 * Gets the Tesseract language code for this language
 	 *
 	 * @return the Tesseract language code
 	 */

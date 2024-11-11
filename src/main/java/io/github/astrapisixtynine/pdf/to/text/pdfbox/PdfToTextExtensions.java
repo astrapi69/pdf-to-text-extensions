@@ -150,8 +150,10 @@ public final class PdfToTextExtensions
 	 *            the input PDF file
 	 * @param outputDir
 	 *            the directory where the output files will be stored
-	 * @return the result of the conversion containing image files, text files, and the final result
-	 *         text file
+	 * @param ocrLanguage
+	 *            the ocr language
+	 * @return the {@link ConversionResult} object of the OCR conversion process containing image
+	 *         files, text files, and the final result text file
 	 * @throws IOException
 	 *             if an I/O error occurs
 	 * @throws InterruptedException
@@ -238,6 +240,7 @@ public final class PdfToTextExtensions
 			output = LinuxShellExecutor.execute(shellPath, executionPath, command);
 			log.log(Level.INFO, "Output from command: " + output);
 			File textFile = new File(resultDir, textFileName + ".txt");
+			FileFactory.newFile(textFile);
 			textFiles.add(textFile);
 		}
 		return textFiles;

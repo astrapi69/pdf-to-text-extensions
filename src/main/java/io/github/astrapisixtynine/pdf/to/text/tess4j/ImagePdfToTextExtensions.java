@@ -69,9 +69,8 @@ public final class ImagePdfToTextExtensions
 	 *            the path to Tesseract data files
 	 * @param language
 	 *            the language to use for OCR
-	 * @return the result of the conversion containing image files, text files, and the final result
-	 *         text file
-	 * @return the list of generated text files
+	 * @return the {@link ConversionResult} object of the OCR conversion process containing image
+	 *         files, text files, and the final result text file
 	 * @throws IOException
 	 *             if an I/O error occurs
 	 * @throws TesseractException

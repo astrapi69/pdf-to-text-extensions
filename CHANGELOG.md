@@ -6,8 +6,9 @@ Version 1.2-SNAPSHOT
 
 CHANGED:
 
-- update gradle to new version 8.11-rc-2
-- update of test dependency equalsverifier to new version 3.17.2
+- update gradle to new version 8.11
+- update of dependency io.github.astrapi69:file-worker to new version 19.0
+- update test dependency nl.jqno.equalsverifier:equalsverifier to new version 3.17.3
 
 Version 1.1
 -------------

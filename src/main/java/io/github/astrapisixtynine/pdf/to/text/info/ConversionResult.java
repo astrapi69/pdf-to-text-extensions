@@ -33,7 +33,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 /**
- * The class {@link ConversionResult} holds the data from the result of the pdf to text conversion
+ * The class {@link ConversionResult} holds the data from the result of the PDF to text conversion
  */
 @Data
 @Builder(toBuilder = true)
@@ -41,12 +41,12 @@ import lombok.experimental.FieldDefaults;
 public class ConversionResult
 {
 	/**
-	 * The image files of the pdf pages. Each image file correspond to one pdf page
+	 * The image files of the PDF pages. Each image file corresponds to one PDF page
 	 */
 	List<File> imageFiles;
 
 	/**
-	 * The text files of the pdf pages. Each text file correspond to one pdf page
+	 * The text files of the PDF pages. Each text file corresponds to one PDF page
 	 */
 	List<File> textFiles;
 

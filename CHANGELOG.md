@@ -1,16 +1,13 @@
 ## Change log
 ----------------------
 
-Version 1.2-SNAPSHOT
+Version 1.2
 -------------
-## [Unreleased]
 
 ### Added
 - **OcrLanguage**: Introduced a new enum `OcrLanguage` that provides a list of language options for Tesseract OCR with corresponding language codes. Each enum constant represents a language (e.g., English, German, French), storing both a display name and a Tesseract-compatible language code.
     - Added support for languages including English, German, French, Spanish, Italian, Dutch, Portuguese, Russian, Chinese (Simplified and Traditional), Japanese, Korean, and Greek.
     - This enum is designed to integrate with the UI, allowing users to select a language for OCR processing.
-
-
 
 CHANGED:
 

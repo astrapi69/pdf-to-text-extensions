@@ -140,6 +140,26 @@ public final class PdfToTextExtensions
 	public static ConversionResult convertPdfToTextfile(File pdfFile, File outputDir)
 		throws IOException, InterruptedException
 	{
+		return convertPdfToTextfile(pdfFile, outputDir, "deu");
+	}
+
+	/**
+	 * Converts a text or image PDF file to text using image processing and OCR
+	 *
+	 * @param pdfFile
+	 *            the input PDF file
+	 * @param outputDir
+	 *            the directory where the output files will be stored
+	 * @return the result of the conversion containing image files, text files, and the final result
+	 *         text file
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @throws InterruptedException
+	 *             if the process is interrupted
+	 */
+	public static ConversionResult convertPdfToTextfile(File pdfFile, File outputDir,
+		String ocrLanguage) throws IOException, InterruptedException
+	{
 		String txtFileName;
 		String fileName;
 		fileName = FilenameExtensions.getFilenameWithoutExtension(pdfFile);
@@ -151,7 +171,7 @@ public final class PdfToTextExtensions
 
 		// step 2: convert the image files to text files
 		String shellPath = "/bin/sh";
-		List<File> textFiles = getTextFiles(imageFiles, outputDir, shellPath);
+		List<File> textFiles = getTextFiles(imageFiles, outputDir, shellPath, ocrLanguage);
 
 		// step 3: concatenate all text files to one
 		ModifyFileExtensions.concatenateAll(textFiles, resultTextFile);
@@ -178,6 +198,29 @@ public final class PdfToTextExtensions
 	public static List<File> getTextFiles(List<File> imageFiles, File resultDir, String shellPath)
 		throws IOException, InterruptedException
 	{
+		return getTextFiles(imageFiles, resultDir, shellPath, "deu");
+	}
+
+	/**
+	 * Converts text or image PDF files into text files using Tesseract OCR
+	 *
+	 * @param imageFiles
+	 *            the list of image files to be processed
+	 * @param resultDir
+	 *            the directory where the text files will be stored
+	 * @param shellPath
+	 *            the shell path for executing commands
+	 * @param ocrLanguage
+	 *            the ocr language
+	 * @return the list of generated text files
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 * @throws InterruptedException
+	 *             if the process is interrupted
+	 */
+	public static List<File> getTextFiles(List<File> imageFiles, File resultDir, String shellPath,
+		String ocrLanguage) throws IOException, InterruptedException
+	{
 		String output;
 		String command;
 		String commandPrefix;
@@ -189,7 +232,8 @@ public final class PdfToTextExtensions
 			File imageFile = imageFiles.get(page);
 			String imageFileName = imageFile.getName();
 			String textFileName = FilenameExtensions.getFilenameWithoutExtension(imageFile);
-			command = commandPrefix + " " + imageFileName + " " + textFileName + " -l deu";
+			command = commandPrefix + " " + imageFileName + " " + textFileName + " -l "
+				+ ocrLanguage;
 			log.log(Level.INFO, "Executing command: " + command);
 			output = LinuxShellExecutor.execute(shellPath, executionPath, command);
 			log.log(Level.INFO, "Output from command: " + output);
@@ -212,6 +256,25 @@ public final class PdfToTextExtensions
 	 */
 	public static List<File> getImageFiles(File pdfFile, File outputDir) throws IOException
 	{
+		return getImageFiles(pdfFile, outputDir, "png");
+	}
+
+	/**
+	 * Converts a text or image PDF file into image files for each page
+	 *
+	 * @param pdfFile
+	 *            the input PDF file
+	 * @param outputDir
+	 *            the directory where the image files will be stored
+	 * @param imageFileFormatName
+	 *            the image file format containing the informal name of the image file format
+	 * @return the list of generated image files
+	 * @throws IOException
+	 *             if an I/O error occurs
+	 */
+	public static List<File> getImageFiles(File pdfFile, File outputDir, String imageFileFormatName)
+		throws IOException
+	{
 		List<File> imageFiles = new ArrayList<>();
 		String fileName = FilenameExtensions.getFilenameWithoutExtension(pdfFile);
 		try (PDDocument document = Loader.loadPDF(pdfFile))
@@ -222,7 +285,7 @@ public final class PdfToTextExtensions
 				BufferedImage image = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
 				File imageFile = new File(outputDir, fileName + "page_" + (page + 1) + ".png");
 				FileFactory.newFile(imageFile);
-				ImageIO.write(image, "png", imageFile);
+				ImageIO.write(image, imageFileFormatName, imageFile);
 				imageFiles.add(imageFile);
 			}
 		}

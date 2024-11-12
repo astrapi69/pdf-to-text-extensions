@@ -4,6 +4,9 @@
 Version 1.3-SNAPSHOT
 -------------
 
+### Added
+
+- new method for resolve supported languages from tesseract for the local machine
 
 Version 1.2
 -------------

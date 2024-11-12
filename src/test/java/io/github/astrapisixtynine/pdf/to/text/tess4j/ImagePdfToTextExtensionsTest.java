@@ -25,18 +25,26 @@
 package io.github.astrapisixtynine.pdf.to.text.tess4j;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mockStatic;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.meanbean.test.BeanTester;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.io.shell.ProcessBuilderFactory;
 import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
 import net.sourceforge.tess4j.TesseractException;
 
@@ -45,6 +53,43 @@ import net.sourceforge.tess4j.TesseractException;
  */
 class ImagePdfToTextExtensionsTest
 {
+
+	@Disabled("""
+		only for local use:
+		if tesseract is installed
+		""")
+	@Test
+	void testGetTesseractSupportedLanguages() throws Exception
+	{
+		// Mock Tesseract output for languages
+		String mockOutput = "eng\ndeu\nfra\n";
+		InputStream inputStream = new ByteArrayInputStream(mockOutput.getBytes());
+
+		// Mock the process builder to return the mocked input stream as output
+		try (MockedStatic<ProcessBuilderFactory> mockedFactory = mockStatic(
+			ProcessBuilderFactory.class))
+		{
+			Process mockProcess = Mockito.mock(Process.class);
+			Mockito.when(mockProcess.getInputStream()).thenReturn(inputStream);
+
+			ProcessBuilder mockBuilder = Mockito.mock(ProcessBuilder.class);
+			Mockito.when(mockBuilder.start()).thenReturn(mockProcess);
+
+			mockedFactory
+				.when(() -> ProcessBuilderFactory.newProcessBuilder(any(), any(), any(), any()))
+				.thenReturn(mockBuilder);
+
+			// Expected languages supported by the mocked output
+			List<String> expectedLanguages = Arrays.asList("eng", "deu", "fra");
+
+			// Call the method to test
+			List<String> actualLanguages = ImagePdfToTextExtensions
+				.getTesseractSupportedLanguages();
+
+			// Verify that the expected and actual lists match
+			assertEquals(expectedLanguages, actualLanguages);
+		}
+	}
 
 	/**
 	 * Tests the {@link ImagePdfToTextExtensions#convertPdfToTextfile(File, File, String, String)}

@@ -33,10 +33,14 @@ import java.util.List;
 
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.modify.ModifyFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.file.write.StoreFileExtensions;
 import io.github.astrapi69.io.file.FileExtension;
 import io.github.astrapi69.io.file.FilenameExtensions;
+import io.github.astrapi69.io.shell.OS;
+import io.github.astrapi69.io.shell.ProcessBuilderFactory;
 import io.github.astrapisixtynine.pdf.to.text.info.ConversionResult;
+import io.github.astrapisixtynine.pdf.to.text.info.OcrLanguage;
 import io.github.astrapisixtynine.pdf.to.text.pdfbox.PdfToTextExtensions;
 import lombok.extern.java.Log;
 import net.sourceforge.tess4j.Tesseract;
@@ -205,5 +209,72 @@ public final class ImagePdfToTextExtensions
 		{
 			return false;
 		}
+	}
+
+
+	/**
+	 * Checks if Tesseract OCR is installed on the system by executing the "tesseract --version"
+	 * command
+	 *
+	 * @return true if Tesseract is installed and available in the system's PATH; false otherwise
+	 */
+	public static List<String> getTesseractSupportedLanguages()
+	{
+		List<String> supportedLanguages = new ArrayList<>();
+		OS currentOS = OS.get();
+		String shellPath;
+		String shellFlag;
+
+		switch (currentOS)
+		{
+			case WINDOWS :
+				shellPath = "cmd.exe";
+				shellFlag = "/c";
+				break;
+			case MAC :
+			case LINUX :
+			case UNIX :
+				shellPath = "/bin/bash";
+				shellFlag = "-c";
+				break;
+			default :
+				throw new UnsupportedOperationException(
+					"Unsupported operating system: " + currentOS);
+
+		}
+		String executionPath;
+		String command;
+		File currentDirectory = PathFinder.getCurrentDirectory();
+		executionPath = currentDirectory.getAbsolutePath();
+
+		String commands = "tesseract" + " --list-langs";
+		ProcessBuilder processBuilder = ProcessBuilderFactory.newProcessBuilder(shellPath,
+			shellFlag, executionPath, commands);
+		List<String> lines = new ArrayList<>();
+		try
+		{
+			Process process = processBuilder.start();
+			StringBuilder stringBuilder = new StringBuilder();
+			BufferedReader reader = new BufferedReader(
+				new InputStreamReader(process.getInputStream()));
+
+			String line;
+			while ((line = reader.readLine()) != null)
+			{
+				lines.add(line);
+			}
+		}
+		catch (Exception e)
+		{
+		}
+		List<String> languageCodes = OcrLanguage.getLanguageCodes();
+		for (String line : lines)
+		{
+			if (languageCodes.contains(line))
+			{
+				supportedLanguages.add(line);
+			}
+		}
+		return supportedLanguages;
 	}
 }

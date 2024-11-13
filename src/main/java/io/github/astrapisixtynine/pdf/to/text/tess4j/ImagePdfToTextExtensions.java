@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import io.github.astrapi69.file.create.FileFactory;
 import io.github.astrapi69.file.modify.ModifyFileExtensions;
@@ -254,7 +255,6 @@ public final class ImagePdfToTextExtensions
 		try
 		{
 			Process process = processBuilder.start();
-			StringBuilder stringBuilder = new StringBuilder();
 			BufferedReader reader = new BufferedReader(
 				new InputStreamReader(process.getInputStream()));
 
@@ -266,6 +266,7 @@ public final class ImagePdfToTextExtensions
 		}
 		catch (Exception e)
 		{
+			log.log(Level.FINEST, ": " , e);
 		}
 		List<String> languageCodes = OcrLanguage.getLanguageCodes();
 		for (String line : lines)
@@ -277,4 +278,5 @@ public final class ImagePdfToTextExtensions
 		}
 		return supportedLanguages;
 	}
+
 }

@@ -124,7 +124,6 @@ public enum OcrLanguage
 
 	public static List<String> getLanguageCodes()
 	{
-
 		List<String> languageCodes = new ArrayList<>();
 		for (OcrLanguage language : OcrLanguage.values())
 		{

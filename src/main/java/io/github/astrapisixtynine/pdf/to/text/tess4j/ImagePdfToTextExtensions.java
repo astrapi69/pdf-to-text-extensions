@@ -266,7 +266,7 @@ public final class ImagePdfToTextExtensions
 		}
 		catch (Exception e)
 		{
-			log.log(Level.FINEST, ": " , e);
+			log.log(Level.FINEST, ": ", e);
 		}
 		List<String> languageCodes = OcrLanguage.getLanguageCodes();
 		for (String line : lines)

@@ -26,6 +26,7 @@ package io.github.astrapisixtynine.pdf.to.text.info;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Enum representing available languages for Tesseract OCR
@@ -130,6 +131,38 @@ public enum OcrLanguage
 			languageCodes.add(language.getCode());
 		}
 		return languageCodes;
+	}
+
+	/**
+	 * Filters the {@link OcrLanguage} enum values based on the provided list of language codes.
+	 *
+	 * @param codes
+	 *            the list of Tesseract language codes to filter by
+	 * @return a list of {@link OcrLanguage} enums that match the provided codes
+	 */
+	public static List<OcrLanguage> filterLanguagesByCodes(List<String> codes)
+	{
+		return codes.stream().map(OcrLanguage::getLanguageByCode)
+			.filter(language -> language != null).collect(Collectors.toList());
+	}
+
+	/**
+	 * Finds an {@link OcrLanguage} by its language code.
+	 *
+	 * @param code
+	 *            the Tesseract language code
+	 * @return the corresponding {@link OcrLanguage}, or {@code null} if not found
+	 */
+	private static OcrLanguage getLanguageByCode(String code)
+	{
+		for (OcrLanguage language : OcrLanguage.values())
+		{
+			if (language.getCode().equals(code))
+			{
+				return language;
+			}
+		}
+		return null;
 	}
 
 	@Override

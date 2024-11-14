@@ -212,12 +212,30 @@ public final class ImagePdfToTextExtensions
 		}
 	}
 
-
 	/**
-	 * Checks if Tesseract OCR is installed on the system by executing the "tesseract --version"
-	 * command
+	 * Retrieves a list of languages supported by the Tesseract OCR tool on the current system.
 	 *
-	 * @return true if Tesseract is installed and available in the system's PATH; false otherwise
+	 * <p>
+	 * This method determines the operating system and executes a shell command to list the
+	 * supported languages of Tesseract OCR. It filters the output against a predefined list of
+	 * valid language codes to ensure the returned list contains only supported languages.
+	 * </p>
+	 *
+	 * @return a {@link List} of language codes supported by Tesseract OCR
+	 * @throws UnsupportedOperationException
+	 *             if the operating system is not supported
+	 *
+	 *             <p>
+	 *             <b>Example usage:</b>
+	 *             </p>
+	 * 
+	 *             <pre>
+	 *             List<String> languages = getTesseractSupportedLanguages();
+	 *             for (String lang : languages)
+	 *             {
+	 *             	System.out.println(lang);
+	 *             }
+	 *             </pre>
 	 */
 	public static List<String> getTesseractSupportedLanguages()
 	{
@@ -244,7 +262,6 @@ public final class ImagePdfToTextExtensions
 
 		}
 		String executionPath;
-		String command;
 		File currentDirectory = PathFinder.getCurrentDirectory();
 		executionPath = currentDirectory.getAbsolutePath();
 

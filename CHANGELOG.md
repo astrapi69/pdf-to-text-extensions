@@ -4,6 +4,14 @@
 Version 1.4-SNAPSHOT
 -------------
 
+### Added
+
+- new method for filter the values of enum OcrLanguage from a given list of codes
+
+
+### CHANGED
+
+- update lombok to new version 1.18.36
 
 Version 1.3
 -------------

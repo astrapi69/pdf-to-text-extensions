@@ -123,6 +123,11 @@ public enum OcrLanguage
 		return code;
 	}
 
+	/**
+	 * Gets the list of all Tesseract language codes from the enum
+	 *
+	 * @return a list of language codes
+	 */
 	public static List<String> getLanguageCodes()
 	{
 		List<String> languageCodes = new ArrayList<>();
@@ -134,7 +139,7 @@ public enum OcrLanguage
 	}
 
 	/**
-	 * Filters the {@link OcrLanguage} enum values based on the provided list of language codes.
+	 * Filters the {@link OcrLanguage} enum values based on the provided list of language codes
 	 *
 	 * @param codes
 	 *            the list of Tesseract language codes to filter by
@@ -147,7 +152,7 @@ public enum OcrLanguage
 	}
 
 	/**
-	 * Finds an {@link OcrLanguage} by its language code.
+	 * Finds an {@link OcrLanguage} by its language code
 	 *
 	 * @param code
 	 *            the Tesseract language code
@@ -165,6 +170,9 @@ public enum OcrLanguage
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString()
 	{

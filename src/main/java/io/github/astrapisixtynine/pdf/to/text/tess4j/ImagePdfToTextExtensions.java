@@ -221,7 +221,7 @@ public final class ImagePdfToTextExtensions
 	 * valid language codes to ensure the returned list contains only supported languages.
 	 * </p>
 	 *
-	 * @return a {@link List} of language codes supported by Tesseract OCR
+	 * @return a {@code List<String>} of language codes supported by Tesseract OCR
 	 * @throws UnsupportedOperationException
 	 *             if the operating system is not supported
 	 *
@@ -230,7 +230,7 @@ public final class ImagePdfToTextExtensions
 	 *             </p>
 	 * 
 	 *             <pre>
-	 *             List<String> languages = getTesseractSupportedLanguages();
+	 *             List&lt;String&gt; languages = getTesseractSupportedLanguages();
 	 *             for (String lang : languages)
 	 *             {
 	 *             	System.out.println(lang);

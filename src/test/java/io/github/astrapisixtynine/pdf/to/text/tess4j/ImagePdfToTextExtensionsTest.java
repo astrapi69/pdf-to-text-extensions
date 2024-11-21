@@ -100,10 +100,10 @@ class ImagePdfToTextExtensionsTest
 	 * @throws TesseractException
 	 *             if an error occurs during OCR processing
 	 */
-	@Disabled("""
-		only for local use:
-		if tesseract is installed
-		""")
+	// @Disabled("""
+	// only for local use:
+	// if tesseract is installed
+	// """)
 	@Test
 	void testConvertPdfToTextfile() throws IOException, TesseractException, IOException
 	{
@@ -182,13 +182,23 @@ class ImagePdfToTextExtensionsTest
 		""")
 	void extractTextFromImage() throws TesseractException
 	{
-		String language = "deu";
-		File imageFile = new File("src/test/resources/sample-image.png");
-		String datapath = "/usr/share/tessdata";
-		String result = ImagePdfToTextExtensions.extractTextFromImage(imageFile, datapath,
-			language);
+		String language;
+		File imageFile;
+		String datapath;
+		String result;
+
+		language = "deu";
+		imageFile = new File("src/test/resources/sample-image.png");
+		datapath = "/usr/share/tessdata";
+		result = ImagePdfToTextExtensions.extractTextFromImage(imageFile, datapath, language);
 		assertNotNull(result);
 		assertFalse(result.isEmpty());
+
+		// imageFile = new File("src/test/resources/img-doc-01.jpeg");
+		// result = ImagePdfToTextExtensions.extractTextFromImage(imageFile, datapath, language);
+		//
+		// assertNotNull(result);
+		// assertFalse(result.isEmpty());
 	}
 
 	/**
